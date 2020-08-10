@@ -9,6 +9,12 @@
   <label for="when">When</label>
   <input type="date" name="when" ngModel required #when="ngModel" [(ngModel)]="newJob.when" />
   <small *ngIf="when.invalid">Please select a valid date</small>
+  <label for="customerId">Customer</label>
+  <select name="customerId" required #customerId="ngModel" ngModel placeholder="Please select" [(ngModel)]="newJob.customerId">
+    <option [ngValue]="undefined" selected>Please select</option>
+    <option *ngFor="let customer of customers | async" [ngValue]="customer.customerId">{{customer.name}}</option>
+  </select>
+  <small *ngIf="customerId.invalid">Please select a customer</small>
   <button type="submit" [disabled]="jobForm.invalid">Add Job</button>
 </form>
 
@@ -18,6 +24,7 @@
     <tr>
       <th>Engineer</th>
       <th>When</th>
+      <th>Customer</th>
       <th></th>
     </tr>
   </thead>
@@ -25,9 +32,16 @@
     <tr *ngFor="let job of jobs">
       <td>{{job.engineer}}</td>
       <td>{{job.when | date:'shortDate'}}</td>
+      
+      <td *ngIf="job.customer; else unknownCustomer">
+        {{ job.customer.name }}
+      </td>
       <td>
         <a [routerLink]="['/job', job.jobId]">Open</a>
       </td>
     </tr>
   </tbody>
 </table>
+<ng-template #unknownCustomer>
+  <td>Unknown</td>
+</ng-template>
