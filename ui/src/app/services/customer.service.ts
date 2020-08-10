@@ -25,8 +25,6 @@ export class CustomerService {
 
   public GetCustomerTypes(): {key: string, value: string}[] {
     const type = CustomerType;
-    //return Object.keys(type).map(k => { return { key: type[k] }; });
-
     const IsNumber = value => isNaN(Number(value)) === false;
     return Object.keys(type)
       .filter(IsNumber)
